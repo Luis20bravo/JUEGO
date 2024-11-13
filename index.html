@@ -6,6 +6,7 @@
     <title>Adivina el Animal - Amazonía</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Bungee&display=swap" rel="stylesheet">
     <style>
+        /* Estilos responsive */
         body {
             font-family: 'Montserrat', sans-serif;
             background: url("ini.jpg") no-repeat center center fixed;
@@ -38,8 +39,8 @@
             flex-direction: column;
             align-items: center;
             margin-top: 100px;
-            width: 80%;
-            max-width: 800px; /* Aumenta el ancho máximo */
+            width: 90%;
+            max-width: 800px;
         }
 
         #inicio-container.active, #juego-container.active {
@@ -54,13 +55,13 @@
             text-align: center;
             height: auto;
             flex: 1;
-            width: 95%; /* Aumenta el ancho del contenedor del juego */
+            width: 100%;
         }
 
         #muñeco-container {
-            width: 30%; /* Mantén un ancho adecuado para el muñeco */
+            width: 40%;
             height: auto;
-            margin-left: 40px;
+            margin-left: 20px;
             margin-top: 10px;
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
@@ -73,18 +74,18 @@
             flex-wrap: wrap;
             justify-content: center;
             margin-top: 20px;
-            width: 100%; /* Asegura que el teclado ocupe todo el ancho del contenedor */
+            width: 100%;
         }
 
         .letra-boton {
-            font-size: 2em; /* Aumenta el tamaño de la fuente aquí si deseas cambiarlo */
-            padding: 12px;
-            margin: 8px;
-            cursor: pointer;
+            font-size: 1.5em;
+            padding: 10px;
+            margin: 5px;
             background-color: #388E3C;
             color: #ffffff;
             border: none;
             border-radius: 8px;
+            cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
@@ -104,7 +105,7 @@
         }
 
         .parte {
-            font-size: 3.5em;
+            font-size: 3em;
             transition: opacity 0.5s ease;
             opacity: 1;
         }
@@ -114,19 +115,19 @@
         }
 
         footer {
-            font-size: 0.9em;
+            font-size: 0.8em;
             margin-top: 50px;
             color: #ffffff;
             text-align: center;
         }
 
         #boton-jugar {
-            font-size: 2em;
-            padding: 15px;
+            font-size: 1.5em;
+            padding: 12px;
             background-color: #FFEB3B;
             color: #00695C;
             border: none;
-            border-radius: 15px;
+            border -radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -135,17 +136,38 @@
         #boton-jugar:hover {
             background-color: #FBC02D;
             box-shadow: 0 7px 20px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        #boton-regresar, #boton-regresar-niveles {
+            font-size: 1.2em;
+            padding: 10px 15px;
+            background-color: #2196F3;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #boton-regresar:hover, #boton-regresar-niveles:hover {
+            background-color: #1976D2;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
         }
 
         #niveles-container {
             margin-top: 20px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .nivel-boton {
-            font-size: 1.5em;
-            padding: 12px;
+            font-size: 1.2em;
+            padding: 10px;
             background-color: #00796B;
             color: #ffffff;
             border: none;
@@ -154,35 +176,29 @@
             opacity: 0.5;
             pointer-events: none;
             transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .nivel-boton.active {
             opacity: 1;
             pointer-events: all;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            background-color: #00BFA5;
+            transform: scale(1.1);
         }
 
-        #mensaje-perdida {
-            display: none;
-            color: red;
-            font-size: 1.5em;
-            margin-top: 20px;
-        }
-
-        #mensaje-victoria {
-            display: none;
-            color: green; /* Color para el mensaje de victoria */
-            font-size: 1.5em;
-            margin-top: 20px;
+        #mensaje-perdida, #mensaje-victoria {
+            font-size: 1.2em;
+            margin-top: 15px;
         }
 
         #palabra-secreta {
-            font-size: 3em; /* Aumenta el tamaño de la fuente aquí */
-            margin: 20px 0; /* Añadir margen para espaciado */
+            font-size: 2.5em;
+            margin: 15px 0;
         }
+
         #pista {
-            font-size: 1.5em; /* Aumenta el tamaño de la fuente de la pista */
-            margin: 10px 0; /* Añadir margen para espaciado */
+            font-size: 1.3em;
+            margin: 8px 0;
         }
     </style>
 </head>
@@ -197,6 +213,7 @@
         <div id="niveles-container">
             <!-- Aquí puedes agregar botones o elementos para los niveles en el futuro -->
         </div>
+        <button id="boton-regresar" style="display: none;"></button>
     </div>
     
 
@@ -209,6 +226,7 @@
                 <div id="teclado"></div>
                 <div id="mensaje-perdida">¡Has perdido! El animal era: <span id="animal-perdido"></span></div>
                 <div id="mensaje-victoria">¡Felicidades! Has adivinado el animal: <span id="animal-adivinado"></span></div>
+                <button id="boton-regresar-niveles">Regresar a Niveles</button> <!-- Botón para regresar a niveles -->
             </div>
             
             <div id="muñeco-container">
@@ -216,11 +234,12 @@
                     <div id="cabeza" class="parte">O</div>
                     <div id="cuerpo" class="parte">|</div>
                     <div id="brazo1" class="parte">/|\</div>
-                    <div id="brazo2" class="parte">|</div>
+                    <div id="brazo2" class="parte ">|</div>
                     <div id="pierna1" class="parte">/\</div>
                 </div>
             </div>
         </div>
+      
     </div>
 
     <audio id="sonido-perdedor" src="perder.mp3"></audio>
@@ -230,28 +249,27 @@
     <script>
         let nivelesCompletados = JSON.parse(localStorage.getItem("nivelesCompletados")) || [];
         const nivelesAnimales = {
-
-    1: [
-        { nombre: "jaguar", pista: "El felino más grande de América, con manchas en forma de roseta y conocido por su habilidad para nadar y cazar en ríos y selvas." },
-        { nombre: "perezoso", pista: "Mamífero de movimientos extremadamente lentos, pasa la mayor parte del tiempo colgado en los árboles y puede dormir hasta 20 horas al día." }
-    ],
-    2: [
-        { nombre: "monoaullador", pista: "Mono con una voz que resuena a kilómetros, especialmente al amanecer y al atardecer, con un cuello especializado para amplificar su llamado." },
-        { nombre: "tapir", pista: "Mamífero robusto y herbívoro de nariz alargada, experto nadador y habitante de las zonas pantanosas de la selva." }
-    ],
-    3: [
-        { nombre: "guacamayo", pista: "Ave de plumaje colorido (rojo, azul, verde y amarillo), con gran capacidad de imitación de sonidos y alta inteligencia." },
-        { nombre: "delfín", pista: "Mamífero marino altamente social, a menudo visto en grupos y conocido por su habilidad para interactuar y jugar con humanos." }
-    ],
-    4: [
-        { nombre: "delfinrosado", pista: "Único delfín de agua dulce en tonos rosados que habita los ríos de la Amazonía y usa ecolocalización para cazar en aguas turbias." },
-        { nombre: "piraña", pista: "Pez carnívoro pequeño, vive en ríos y arroyos y es conocido por su mandíbula fuerte y dientes afilados, ideales para cortar carne." }
-    ],
-    5: [
-        { nombre: "anaconda", pista: "Serpiente de gran tamaño, puede superar los 9 metros, caza en ríos y pantanos, donde usa su peso y fuerza para constricción." },
-        { nombre: "tigre", pista: "El felino más grande, conocido por sus rayas naranjas y negras; sin embargo, su hábitat típico no incluye la Amazonía ecuatoriana." }
-    ]
-}
+            1: [
+                { nombre: "jaguar", pista: "El felino más grande de América, con manchas en forma de roseta y conocido por su habilidad para nadar y cazar en ríos y selvas." },
+                { nombre: "perezoso", pista: "Mamífero de movimientos extremadamente lentos, pasa la mayor parte del tiempo colgado en los árboles y puede dormir hasta 20 horas al día." }
+            ],
+            2: [
+                { nombre: "monoaullador", pista: "Mono con una voz que resuena a kilómetros, especialmente al amanecer y al atardecer, con un cuello especializado para amplificar su llamado." },
+                { nombre: "tapir", pista: "Mamífero robusto y herbívoro de nariz alargada, experto nadador y habitante de las zonas pantanosas de la selva." }
+            ],
+            3: [
+                { nombre: "guacamayo", pista: "Ave de plumaje colorido (rojo, azul, verde y amarillo), con gran capacidad de imitación de sonidos y alta inteligencia." },
+                { nombre: "delfín", pista: "Mamífero marino altamente social, a menudo visto en grupos y conocido por su habilidad para interactuar y jugar con humanos." }
+            ],
+            4: [
+                { nombre: "delfinrosado", pista: "Único delfín de agua dulce en tonos rosados que habita los ríos de la Amazonía y usa ecolocalización para cazar en aguas turbias." },
+                { nombre: "piraña", pista: "Pez carnívoro pequeño, vive en ríos y arroyos y es conocido por su mandíbula fuerte y dientes afilados, ideales para cortar carne." }
+            ],
+            5: [
+                { nombre: "anaconda", pista: "Serpiente de gran tamaño, puede superar los 9 metros, caza en ríos y pantanos, donde usa su peso y fuerza para constricción." },
+                { nombre: "tigre", pista: "El felino más grande, conocido por sus rayas naranjas y negras; sin embargo, su hábitat típico no incluye la Amazonía ecuatoriana." }
+            ]
+        }
 
         let animalAleatorio, palabraSecreta, pista, palabraOculta;
         let intentosFallidos = 0;
@@ -276,6 +294,19 @@
                 nivelBoton.onclick = () => iniciarJuego(i);
                 nivelesContainer.appendChild(nivelBoton);
             }
+            document.getElementById("boton-regresar").style.display = "block";
+        };
+
+        document.getElementById("boton-regresar").onclick = function() {
+            document.getElementById("inicio-container").classList.add("active");
+            document.getElementById("juego-container").classList.remove("active");
+            document.getElementById("boton-regresar").style.display = "none";
+        };
+
+        document.getElementById("boton-regresar-niveles").onclick = function() {
+            document.getElement 
+            document.getElementById("inicio-container").classList.add("active");
+            document.getElementById("juego-container").classList.remove("active");
         };
 
         function iniciarJuego(nivel) {
@@ -307,14 +338,12 @@
                 document.getElementById("mensaje-perdida").style.display = "block";
                 document.getElementById("sonido-perdedor").play();
                 setTimeout(reiniciarJuego, 3000);
-
             } else if (!palabraOculta.includes("_")) {
                 document.getElementById("animal-adivinado").textContent = palabraSecreta;
-                document.getElementById("mensaje-victoria").style.display="block";
+                document.getElementById("mensaje-victoria").style.display = "block";
                 document.getElementById("sonido-victoria").play();
                 setTimeout(reiniciarJuego, 4000);
                 desbloquearSiguienteNivel();
-            
             }
         }
 
@@ -361,11 +390,8 @@
 
             document.getElementById("mensaje-perdida").style.display = "none";
             document.getElementById("mensaje-victoria").style.display = "none";
-
         }
     </script>
-
-    
 
     <footer><h2>"PRESERVA EL HÁBITAT DE LOS ANIMALES"</h2></footer>
 
