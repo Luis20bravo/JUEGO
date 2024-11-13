@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adivina el Animal - Amazonía</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Bungee&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: url("ini.jpg") no-repeat center center fixed;
+            background-size: cover;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-family: 'Bungee', cursive;
+            font-size: 3.5em;
+            color: #FFEB3B;
+            text-align: center;
+            margin-top: 30px;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            color: #FFEB3B;
+            text-shadow: 1px 1px 2px #000000;
+        }
+
+        #inicio-container, #juego-container {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 100px;
+            width: 80%;
+            max-width: 800px; /* Aumenta el ancho máximo */
+        }
+
+        #inicio-container.active, #juego-container.active {
+            display: flex;
+        }
+
+        #juego {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            height: auto;
+            flex: 1;
+            width: 95%; /* Aumenta el ancho del contenedor del juego */
+        }
+
+        #muñeco-container {
+            width: 30%; /* Mantén un ancho adecuado para el muñeco */
+            height: auto;
+            margin-left: 40px;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            flex: 0 0 auto;
+        }
+
+        #teclado {
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%; /* Asegura que el teclado ocupe todo el ancho del contenedor */
+        }
+
+        .letra-boton {
+            font-size: 2em; /* Aumenta el tamaño de la fuente aquí si deseas cambiarlo */
+            padding: 12px;
+            margin: 8px;
+            cursor: pointer;
+            background-color: #388E3C;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .letra-boton:hover {
+            background-color: #2E7D32;
+            transform: scale(1.1);
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #muñeco {
+            color: floralwhite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .parte {
+            font-size: 3.5em;
+            transition: opacity 0.5s ease;
+            opacity: 1;
+        }
+
+        .parte.ocultar {
+            opacity: 0;
+        }
+
+        footer {
+            font-size: 0.9em;
+            margin-top: 50px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        #boton-jugar {
+            font-size: 2em;
+            padding: 15px;
+            background-color: #FFEB3B;
+            color: #00695C;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #boton-jugar:hover {
+            background-color: #FBC02D;
+            box-shadow: 0 7px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        #niveles-container {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nivel-boton {
+            font-size: 1.5em;
+            padding: 12px;
+            background-color: #00796B;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .nivel-boton.active {
+            opacity: 1;
+            pointer-events: all;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #mensaje-perdida {
+            display: none;
+            color: red;
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        #mensaje-victoria {
+            display: none;
+            color: green; /* Color para el mensaje de victoria */
+            font-size: 1.5em;
+            margin-top: 20px;
+        }
+
+        #palabra-secreta {
+            font-size: 3em; /* Aumenta el tamaño de la fuente aquí */
+            margin: 20px 0; /* Añadir margen para espaciado */
+        }
+        #pista {
+            font-size: 1.5em; /* Aumenta el tamaño de la fuente de la pista */
+            margin: 10px 0; /* Añadir margen para espaciado */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla de inicio -->
+    <div id="inicio-container" class="active">
+        <h1>Runa Yachak</h1>
+        <h2>Adivina el animal de la Amazonía</h2>
+    
+        <button id="boton-jugar">Jugar</button>
+        <div id="niveles-container">
+            <!-- Aquí puedes agregar botones o elementos para los niveles en el futuro -->
+        </div>
+    </div>
+    
+
+    <!-- Contenedor del juego -->
+    <div id="juego-container">
+        <div id="contenedor-principal" style="display: flex; justify-content: center; align-items: flex-start;">
+            <div id="juego">
+                <div id="pista">Pista: Este animal vive...</div>
+                <div id="palabra-secreta">_ _ _ _ _ _</div>
+                <div id="teclado"></div>
+                <div id="mensaje-perdida">¡Has perdido! El animal era: <span id="animal-perdido"></span></div>
+                <div id="mensaje-victoria">¡Felicidades! Has adivinado el animal: <span id="animal-adivinado"></span></div>
+            </div>
+            
+            <div id="muñeco-container">
+                <div id="muñeco">
+                    <div id="cabeza" class="parte">O</div>
+                    <div id="cuerpo" class="parte">|</div>
+                    <div id="brazo1" class="parte">/|\</div>
+                    <div id="brazo2" class="parte">|</div>
+                    <div id="pierna1" class="parte">/\</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="sonido-perdedor" src="perder.mp3"></audio>
+    <audio id="sonido-victoria" src="ganar.mp3"></audio>
+    <audio id="sonido-inicio" src="inicio.mp3"></audio>
+
+    <script>
+        let nivelesCompletados = JSON.parse(localStorage.getItem("nivelesCompletados")) || [];
+        const nivelesAnimales = {
+
+    1: [
+        { nombre: "jaguar", pista: "El felino más grande de América, con manchas en forma de roseta y conocido por su habilidad para nadar y cazar en ríos y selvas." },
+        { nombre: "perezoso", pista: "Mamífero de movimientos extremadamente lentos, pasa la mayor parte del tiempo colgado en los árboles y puede dormir hasta 20 horas al día." }
+    ],
+    2: [
+        { nombre: "monoaullador", pista: "Mono con una voz que resuena a kilómetros, especialmente al amanecer y al atardecer, con un cuello especializado para amplificar su llamado." },
+        { nombre: "tapir", pista: "Mamífero robusto y herbívoro de nariz alargada, experto nadador y habitante de las zonas pantanosas de la selva." }
+    ],
+    3: [
+        { nombre: "guacamayo", pista: "Ave de plumaje colorido (rojo, azul, verde y amarillo), con gran capacidad de imitación de sonidos y alta inteligencia." },
+        { nombre: "delfín", pista: "Mamífero marino altamente social, a menudo visto en grupos y conocido por su habilidad para interactuar y jugar con humanos." }
+    ],
+    4: [
+        { nombre: "delfinrosado", pista: "Único delfín de agua dulce en tonos rosados que habita los ríos de la Amazonía y usa ecolocalización para cazar en aguas turbias." },
+        { nombre: "piraña", pista: "Pez carnívoro pequeño, vive en ríos y arroyos y es conocido por su mandíbula fuerte y dientes afilados, ideales para cortar carne." }
+    ],
+    5: [
+        { nombre: "anaconda", pista: "Serpiente de gran tamaño, puede superar los 9 metros, caza en ríos y pantanos, donde usa su peso y fuerza para constricción." },
+        { nombre: "tigre", pista: "El felino más grande, conocido por sus rayas naranjas y negras; sin embargo, su hábitat típico no incluye la Amazonía ecuatoriana." }
+    ]
+}
+
+        let animalAleatorio, palabraSecreta, pista, palabraOculta;
+        let intentosFallidos = 0;
+        const maxIntentosBase = 6;
+        let maxIntentos = maxIntentosBase;
+        let nivelActual = 1;
+        const partesMuñeco = ["cabeza", "cuerpo", "brazo1", "brazo2", "pierna1"];
+
+        document.getElementById("boton-jugar").onclick = function() {
+            document.getElementById("sonido-inicio").play();
+            const nivelesContainer = document.getElementById("niveles-container");
+            nivelesContainer.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const nivelBoton = document.createElement("button");
+                nivelBoton.textContent = "Nivel " + i;
+                nivelBoton.classList.add("nivel-boton");
+                if (nivelesCompletados.includes(i)) {
+                    nivelBoton.classList.add("active");
+                } else if (i === 1) {
+                    nivelBoton.classList.add("active");
+                }
+                nivelBoton.onclick = () => iniciarJuego(i);
+                nivelesContainer.appendChild(nivelBoton);
+            }
+        };
+
+        function iniciarJuego(nivel) {
+            nivelActual = nivel;
+            maxIntentos = maxIntentosBase - (nivel - 1);
+            document.getElementById("inicio-container").classList.remove("active");
+            document.getElementById("juego-container").classList.add("active");
+            reiniciarJuego();
+        }
+
+        function manejarIntento(letra) {
+            let acierto = false;
+            for (let i = 0; i < palabraSecreta.length; i++) {
+                if (palabraSecreta[i] === letra) {
+                    palabraOculta[i] = letra;
+                    acierto = true;
+                }
+            }
+
+            document.getElementById("palabra-secreta").textContent = palabraOculta.join(" ");
+
+            if (!acierto) {
+                intentosFallidos++;
+                ocultarParteMuñeco(intentosFallidos);
+            }
+
+            if (intentosFallidos >= maxIntentos) {
+                document.getElementById("animal-perdido").textContent = palabraSecreta;
+                document.getElementById("mensaje-perdida").style.display = "block";
+                document.getElementById("sonido-perdedor").play();
+                setTimeout(reiniciarJuego, 3000);
+
+            } else if (!palabraOculta.includes("_")) {
+                document.getElementById("animal-adivinado").textContent = palabraSecreta;
+                document.getElementById("mensaje-victoria").style.display="block";
+                document.getElementById("sonido-victoria").play();
+                setTimeout(reiniciarJuego, 4000);
+                desbloquearSiguienteNivel();
+            
+            }
+        }
+
+        function ocultarParteMuñeco(intentos) {
+            if (intentos <= maxIntentos) {
+                document.getElementById(partesMuñeco[maxIntentos - intentos]).classList.add("ocultar");
+            }
+        }
+
+        function desbloquearSiguienteNivel() {
+            const siguienteNivelBoton = document.querySelector(`#niveles-container button:nth-child(${nivelActual + 1})`);
+            if (siguienteNivelBoton) {
+                siguienteNivelBoton.classList.add("active");
+            }
+            nivelesCompletados.push(nivelActual);
+            localStorage.setItem("nivelesCompletados", JSON.stringify(nivelesCompletados));
+            document.getElementById("inicio-container").classList.add("active");
+            document.getElementById("juego-container").classList.remove("active");
+        }
+
+        function reiniciarJuego() {
+            animalAleatorio = nivelesAnimales[nivelActual][Math.floor(Math.random() * nivelesAnimales[nivelActual].length)];
+            palabraSecreta = animalAleatorio.nombre;
+            pista = animalAleatorio.pista;
+            palabraOculta = Array(palabraSecreta.length).fill("_");
+            intentosFallidos = 0;
+
+            document.getElementById("palabra-secreta").textContent = palabraOculta.join(" ");
+            document.getElementById("pista").textContent = "Pista: " + pista;
+
+            partesMuñeco.forEach(parte => {
+                document.getElementById(parte).classList.remove("ocultar");
+            });
+
+            document.getElementById("teclado").innerHTML = '';
+            const letras = "abcdefghijklmnopqrstuvwxyz".split("");
+            letras.forEach(letra => {
+                let boton = document.createElement("button");
+                boton.textContent = letra;
+                boton.classList.add("letra-boton");
+                boton.onclick = () => manejarIntento(letra);
+                document.getElementById("teclado").appendChild(boton);
+            });
+
+            document.getElementById("mensaje-perdida").style.display = "none";
+            document.getElementById("mensaje-victoria").style.display = "none";
+
+        }
+    </script>
+
+    
+
+    <footer><h2>"PRESERVA EL HÁBITAT DE LOS ANIMALES"</h2></footer>
+
+</body>
+</html>
